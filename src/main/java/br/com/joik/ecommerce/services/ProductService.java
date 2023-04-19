@@ -1,29 +1,25 @@
-package br.com.joik.ecommerce.controller;
+package br.com.joik.ecommerce.services;
 
-import br.com.joik.ecommerce.model.Product;
-import br.com.joik.ecommerce.repository.ProductRepository;
+import br.com.joik.ecommerce.models.Product;
+import br.com.joik.ecommerce.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/product")
-public class ProductController {
-
+@Service
+public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @GetMapping("/all")
-    private ResponseEntity<List<Product>> getAll() {
+    public ResponseEntity<List<Product>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(productRepository.findAll());
     }
 
-    @GetMapping("/{id}")
-    private ResponseEntity<?> getWithId(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getWithId(Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
@@ -31,14 +27,12 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productOptional.get());
     }
 
-    @PostMapping
-    private ResponseEntity<?> addProduct(@RequestBody Product product) {
+    public ResponseEntity<?> addProduct(Product product) {
         Product savedProduct = productRepository.save(product);
         return ResponseEntity.ok(savedProduct);
     }
 
-    @PutMapping("/{id}")
-    private ResponseEntity<?> changeProduct(@PathVariable("id") Long id, @RequestBody Product updatedProduct) {
+    public ResponseEntity<?> changeProduct(Long id, Product updatedProduct) {
         Optional<Product> optionalProduct = productRepository.findById(id);
 
         if (optionalProduct.isPresent()) {
@@ -52,8 +46,7 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
-    private ResponseEntity<?> deleteProduct(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteProduct(Long id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
 
         if (optionalProduct.isPresent()) {

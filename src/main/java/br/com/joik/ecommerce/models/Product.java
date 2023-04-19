@@ -1,4 +1,4 @@
-package br.com.joik.ecommerce.model;
+package br.com.joik.ecommerce.models;
 
 import lombok.Data;
 import javax.persistence.*;
