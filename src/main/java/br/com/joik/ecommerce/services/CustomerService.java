@@ -30,6 +30,6 @@ public class CustomerService {
     public ResponseEntity<?> addCustomer(Customer customer) {
         customer.setPassword(customer.generatePasswordHash(customer.getPassword()));
         Customer savedCustomer = customerRepository.save(customer);
-        return ResponseEntity.ok(savedCustomer);
+        return ResponseEntity.ok("Customer added");
     }
 }
